@@ -1,6 +1,7 @@
 package vansellersystem;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -69,12 +70,43 @@ public class VanSellerSystem {
             quantity = input.nextInt();
             
             inventory.add(new Product(id, name, 
-                new Date(mfgY - 1900,mfgM,mfgD), 
-                new Date(expY - 1900, expM, expD), 
-                price, quantity) );
+                price) );
         
         }
         inventory.displayInventory();
+        
+        
+        // Van seller (driver)
+        VanSalesPerson seller = new VanSalesPerson("James Carter", "VAN-12");
+
+        // Products
+        Product p1 = new Product("P001", "Coca-Cola-500ml", 1.20);
+        Product p2 = new Product("P002", "Lays-Classic", 0.75);
+
+        // Create delivery note
+        DeliveryNote note = new DeliveryNote(
+                "DN-1001",
+                "S-1001",
+                LocalDate.of(2025, 11, 15),
+                seller,
+                "FreshMart Supermarket",
+                "45 Industrial Zone"
+        );
+
+        // Add sold items
+        note.addSale(p1, 24);
+        note.addSale(p2, 30);
+
+        // Add returns
+        note.addReturn(p2, 2);
+
+        // Payment
+        double total = (24 * 1.20) + ((30 - 2) * 0.75);
+        note.setPayment(total, "Cash");
+
+        // Print
+        note.print();
+    
         
         input.close();
         consoleInput.close();
